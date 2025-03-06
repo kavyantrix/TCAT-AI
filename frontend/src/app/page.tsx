@@ -54,26 +54,34 @@ export default function Home() {
   };
 
   return (
-    <Box sx={{
-      height: '100vh',
+    <Box sx={{ 
       display: 'flex',
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      height: '100vh',
       bgcolor: '#f5f5f5'
     }}>
       <Card sx={{ p: 4, maxWidth: 400, width: '100%' }}>
-        <Box sx={{ mb: 4, textAlign: 'center' }}>
+        <Box sx={{ 
+          mb: 4, 
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}>
           <Image
             src="/aws-logo.png"
             alt="AWS Logo"
-            width={150}
-            height={150}
-            style={{ cursor: 'pointer' }}
+            width={180}
+            height={120}
+            style={{ 
+              cursor: 'pointer',
+              objectFit: 'contain'
+            }}
             onClick={() => setShowForm(true)}
           />
-          <Typography variant="h5" sx={{ mt: 2 }}>
-            AWS Cost Optimizer
-          </Typography>
+          
         </Box>
 
         {showForm && (
