@@ -51,6 +51,7 @@ const theme = createTheme({
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  // Add this line to define showFloatingChat
   const showFloatingChat = router.pathname !== '/chatbot';
 
   return (
@@ -66,8 +67,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 flexGrow: 1, 
                 color: 'primary.main',
                 fontWeight: 600,
-                fontSize: '1.5rem'
+                fontSize: '1.5rem',
+                cursor: 'pointer' // Add cursor pointer
               }}
+              onClick={() => router.push('/insightsDashboard')} // Add click handler
             >
               AWS Cost Optimizer
             </Typography>
