@@ -85,7 +85,7 @@ const AdvisorPage = () => {
     <Layout>
       <Box sx={{ mb: 4 }}>
         <Typography variant="h4" gutterBottom fontWeight="500">
-          AWS Trusted Advisor
+          TCAT Trusted Advisor
         </Typography>
         <Typography variant="body1" color="text.secondary">
           Recommendations and best practices for your AWS infrastructure

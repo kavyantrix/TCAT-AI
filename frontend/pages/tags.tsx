@@ -67,7 +67,7 @@ const TagsPage = () => {
       <Grid container spacing={3}>
         {Object.entries(resources).map(([resourceType, items]: [string, any[]]) => (
           <Grid item xs={12} key={resourceType}>
-            <Accordion defaultExpanded>
+            <Accordion defaultExpanded={false}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Typography variant="h6">{resourceType}</Typography>

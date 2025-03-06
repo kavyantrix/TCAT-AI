@@ -24,16 +24,6 @@ class AWSResource(Base):
     data = Column(JSON)
     last_updated = Column(DateTime, default=datetime.utcnow)
 
-# Add AWS Cost model
-class AWSCost(Base):
-    __tablename__ = "aws_costs"
-    
-    id = Column(String, primary_key=True)
-    start_date = Column(String, index=True)
-    end_date = Column(String, index=True)
-    data = Column(JSON)
-    last_updated = Column(DateTime, default=datetime.utcnow)
-
 # Add AWS Advisor model
 class AWSAdvisor(Base):
     __tablename__ = "aws_advisor"

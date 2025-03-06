@@ -25,13 +25,14 @@ const ChatbotPage = () => {
     <Layout>
       <Box sx={{ maxWidth: 800, margin: '0 auto', padding: 4 }}>
         <Typography variant="h4" gutterBottom>
-          AWS Cost Optimization Assistant
+          TCAT Cost Optimization Assistant
         </Typography>
         <Paper sx={{ padding: 3, marginBottom: 3 }}>
           <form onSubmit={handleSubmit}>
             <TextField
               fullWidth
-              label="Ask about your AWS costs"
+              label="Ask about your TCAT costs"
+              placeholder="e.g., How can I reduce my EC2 costs?"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               margin="normal"

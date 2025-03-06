@@ -18,7 +18,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import LabelIcon from '@mui/icons-material/Label';
-import FloatingChatbot from './FloatingChatbot';
+import AgentChatWidget from './AgentChatWidget';
 
 const theme = createTheme({
   palette: {
@@ -51,8 +51,6 @@ const theme = createTheme({
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  // Add this line to define showFloatingChat
-  const showFloatingChat = router.pathname !== '/chatbot';
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,24 +70,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               }}
               onClick={() => router.push('/insightsDashboard')} // Add click handler
             >
-              AWS Cost Optimizer
+              TCAT Cost Optimizer
             </Typography>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Button
                 color="primary"
                 startIcon={<DashboardIcon />}
-                onClick={() => router.push('/costs')}
-                variant={router.pathname === '/costs' ? 'contained' : 'text'}
+                onClick={() => router.push('/insightsDashboard')}
+                variant={router.pathname === '/insightsDashboard' ? 'contained' : 'text'}
               >
-                Costs
-              </Button>
-              <Button
-                color="primary"
-                startIcon={<StorageIcon />}
-                onClick={() => router.push('/resources')}
-                variant={router.pathname === '/resources' ? 'contained' : 'text'}
-              >
-                Resources
+                Dashboard
               </Button>
               <Button
                 color="primary"
@@ -101,19 +91,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               </Button>
               <Button
                 color="primary"
-                startIcon={<LabelIcon />}
+                startIcon={<StorageIcon />}
                 onClick={() => router.push('/tags')}
                 variant={router.pathname === '/tags' ? 'contained' : 'text'}
               >
-                Tags
-              </Button>
-              <Button
-                color="primary"
-                startIcon={<ChatIcon />}
-                onClick={() => router.push('/chatbot')}
-                variant={router.pathname === '/chatbot' ? 'contained' : 'text'}
-              >
-                Chatbot
+                Resources
               </Button>
             </Box>
           </Toolbar>
@@ -123,24 +105,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           sx={{
             flexGrow: 1,
             backgroundColor: 'background.default',
-            py: 3,
-            px: 3
+            py: 4,
+            px: 2
           }}
         >
-          {children}
+          <Container maxWidth="lg">
+            {children}
+          </Container>
         </Box>
-        {showFloatingChat && <FloatingChatbot />}
       </Box>
+  <AgentChatWidget />
     </ThemeProvider>
   );
 };
-
-const menuItems = [
-  { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-  { text: 'Resources', icon: <StorageIcon />, path: '/resources' },
-  { text: 'Costs', icon: <AttachMoneyIcon />, path: '/costs' },
-  { text: 'Advisor', icon: <LightbulbIcon />, path: '/advisor' },
-  { text: 'Tags', icon: <LabelIcon />, path: '/tags' },
-];
 
 export default Layout;
