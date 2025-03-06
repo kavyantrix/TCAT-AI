@@ -58,12 +58,17 @@ class AWSService:
             
             for category in categories:
                 checks_response = support.describe_trusted_advisor_checks(
-                    language='en',
-                    checkNames=[category]
+                    language='en'
                 )
                 category_checks = []
                 
-                for check in checks_response['checks']:
+                # Filter checks by category
+                category_checks_list = [
+                    check for check in checks_response['checks']
+                    if check['category'] == category
+                ]
+                
+                for check in category_checks_list:
                     result = support.describe_trusted_advisor_check_result(
                         checkId=check['id'],
                         language='en'
@@ -85,7 +90,8 @@ class AWSService:
                 
                     category_checks.append(check_details)
                 
-                all_checks[category] = category_checks
+                if category_checks:  # Only add category if it has checks
+                    all_checks[category] = category_checks
                 
             return all_checks
         except ClientError as e:
