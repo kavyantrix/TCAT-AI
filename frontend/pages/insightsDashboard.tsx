@@ -98,15 +98,6 @@ const InsightsDashboardContent = () => {
   }
 
 
-    if (loading) {
-    return (
-      <Layout>
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-          <CircularProgress />
-        </Box>
-      </Layout>
-    );
-  }
 
   return (
     <Layout> <Grid container spacing={3}>

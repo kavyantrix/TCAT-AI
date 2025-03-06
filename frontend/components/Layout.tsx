@@ -120,23 +120,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           sx={{
             flexGrow: 1,
             backgroundColor: 'background.default',
-            py: 4,
-            px: 2
+            py: 3,
+            px: 3
           }}
         >
-          <Container maxWidth="lg">
-            <Paper 
-              elevation={0} 
-              sx={{ 
-                p: 3, 
-                borderRadius: 2,
-                backgroundColor: 'white',
-                minHeight: 'calc(100vh - 200px)'
-              }}
-            >
-              {children}
-            </Paper>
-          </Container>
+          {children}
         </Box>
         {showFloatingChat && <FloatingChatbot />}
       </Box>
