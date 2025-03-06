@@ -16,7 +16,7 @@ export const getCostSummary = async (startDate: string, endDate: string) => {
   return response.data;
 };
 
-export const getEC2Resources = async () => {
+export const getEc2Instances = async () => {
   const response = await api.get('/resources/ec2');
   return response.data;
 };
@@ -26,7 +26,17 @@ export const getTrustedAdvisorRecommendations = async () => {
   return response.data;
 };
 
+export const getTrustedAdvisorDetails = async () => {
+  const response = await api.get('/advisor/details');
+  return response.data;
+};
+
 export const askQuestion = async (question: string) => {
   const response = await api.post('/chatbot/ask', { question });
+  return response.data;
+};
+
+export const getTaggedResources = async () => {
+  const response = await api.get('/tags/resources');
   return response.data;
 };
