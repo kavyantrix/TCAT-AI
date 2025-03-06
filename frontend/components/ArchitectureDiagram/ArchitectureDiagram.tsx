@@ -17,9 +17,10 @@ import 'reactflow/dist/style.css';
 import { Box, Button, Typography, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Divider, CircularProgress, List, ListItem, ListItemText, IconButton, Snackbar, Alert } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh'; // Add this import for the magic wand icon
 import ServicePalette from './ServicePalette';
 import AwsServiceNode from './AwsServiceNode';
-import { saveDiagramToServer, getDiagramsFromServer, getDiagramById, deleteDiagram, DiagramResponse } from '../../services/diagram-service';
+import { saveDiagramToServer, getDiagramsFromServer, getDiagramById, deleteDiagram, DiagramResponse, generateDiagram } from '../../services/diagram-service';
 
 const nodeTypes: NodeTypes = {
   awsService: AwsServiceNode,
@@ -274,6 +275,28 @@ const ArchitectureDiagram: React.FC = () => {
     linkElement.click();
   };
 
+  // Add new state variables for diagram generation
+  const [generating, setGenerating] = useState(false);
+
+  // Modified function to handle diagram generation without prompt
+  const handleGenerateDiagram = async () => {
+    try {
+      setGenerating(true);
+      const generatedDiagram = await generateDiagram();
+      
+      // Set the generated diagram data
+      setNodes(generatedDiagram.diagram_data.nodes || []);
+      setEdges(generatedDiagram.diagram_data.edges || []);
+      
+      showSnackbar('Diagram generated successfully', 'success');
+    } catch (error) {
+      console.error('Error generating diagram:', error);
+      showSnackbar('Failed to generate diagram', 'error');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   return (
     <Box sx={{ height: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
@@ -292,6 +315,16 @@ const ArchitectureDiagram: React.FC = () => {
           onClick={triggerFileUpload}
         >
           Import from JSON
+        </Button>
+        {/* Modified Generate Diagram button to call API directly */}
+        <Button 
+          variant="contained" 
+          color="secondary"
+          startIcon={generating ? <CircularProgress size={24} sx={{ mr: 1 }} /> : <AutoFixHighIcon sx={{ mr: 1 }} />}
+          onClick={handleGenerateDiagram}
+          disabled={generating}
+        >
+          {generating ? 'Generating...' : 'Generate Diagram'}
         </Button>
         <input
           type="file"
@@ -443,6 +476,40 @@ const ArchitectureDiagram: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Remove the Generate Dialog */}
+      {/* 
+      <Dialog open={openGenerateDialog} onClose={() => setOpenGenerateDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>Generate Architecture Diagram</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            Describe the AWS architecture you want to generate. For example: "A web application with EC2 instances behind a load balancer, connected to an RDS database and S3 bucket for storage."
+          </Typography>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Architecture Description"
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            value={generationPrompt}
+            onChange={(e) => setGenerationPrompt(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenGenerateDialog(false)}>Cancel</Button>
+          <Button 
+            onClick={handleGenerateDiagram} 
+            disabled={generating || generationPrompt.trim() === ''}
+            variant="contained"
+            color="secondary"
+          >
+            {generating ? <CircularProgress size={24} /> : 'Generate'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      */}
 
       {/* Snackbar for notifications */}
       <Snackbar 

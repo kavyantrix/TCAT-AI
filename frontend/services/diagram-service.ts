@@ -37,3 +37,12 @@ export const getDiagramById = async (id: number): Promise<DiagramResponse> => {
 export const deleteDiagram = async (id: number): Promise<void> => {
   await api.delete(`/diagrams/${id}`);
 };
+
+// Add this new function to the diagram-service.ts file
+
+export const generateDiagram = async (): Promise<DiagramResponse> => {
+  const response = await api.post('/diagrams/generate', {
+    user_id: 'anonymous' // This can be updated when authentication is implemented
+  });
+  return response.data;
+};
