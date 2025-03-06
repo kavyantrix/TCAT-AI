@@ -19,6 +19,8 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import LabelIcon from '@mui/icons-material/Label';
 import AgentChatWidget from './AgentChatWidget';
+// Add this import
+import ArchitectureIcon from '@mui/icons-material/Architecture';
 
 const theme = createTheme({
   palette: {
@@ -96,6 +98,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 variant={router.pathname === '/tags' ? 'contained' : 'text'}
               >
                 Resources
+              </Button>
+              <Button
+                color="primary"
+                startIcon={<ArchitectureIcon />}
+                onClick={() => router.push('/architecture')}
+                variant={router.pathname === '/architecture' ? 'contained' : 'text'}
+              >
+                Architecture
               </Button>
             </Box>
           </Toolbar>

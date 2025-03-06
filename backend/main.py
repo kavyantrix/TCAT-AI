@@ -1,7 +1,7 @@
 from agno import agent
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import resources, costs, advisor, chatbot, tags, auth
+from routers import resources, costs, advisor, chatbot, tags, auth, diagrams
 
 app = FastAPI(title="AWS Cost Optimizer")
 
@@ -21,6 +21,7 @@ app.include_router(advisor.router, prefix="/api/advisor", tags=["advisor"])
 app.include_router(chatbot.router, prefix="/api/chatbot", tags=["chatbot"])
 app.include_router(tags.router, prefix="/api/tags", tags=["tags"])
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(diagrams.router, prefix="/api/diagrams", tags=["diagrams"])
 
 @app.get("/")
 async def root():

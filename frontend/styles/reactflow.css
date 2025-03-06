@@ -1,0 +1,96 @@
+.react-flow__node-awsService {
+  font-size: 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  width: 150px;
+}
+
+.react-flow__handle {
+  width: 8px;
+  height: 8px;
+  background-color: #1a73e8;
+}
+
+.react-flow__handle-top {
+  top: -4px;
+}
+
+.react-flow__handle-bottom {
+  bottom: -4px;
+}
+
+.react-flow__edge-path {
+  stroke-width: 2;
+}
+
+.react-flow__controls {
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+}
+
+.node-resize-handle {
+  width: 7px;
+  height: 7px;
+  background-color: #1a73e8;
+  border-radius: 50%;
+}
+
+.node-resize-line {
+  border: 1px dashed #1a73e8;
+}
+
+.react-flow__node.selected .aws-service-node {
+  box-shadow: 0 0 0 2px #1a73e8;
+}
+
+/* Add these styles to ensure edges are visible */
+.react-flow__edge {
+  z-index: 1000 !important;
+  pointer-events: all;
+}
+
+.react-flow__edge-path {
+  stroke-width: 2;
+  z-index: 1000;
+}
+
+/* Make the edge interaction area larger */
+.react-flow__edge-interaction {
+  stroke-width: 10;
+}
+
+/* Ensure handles are above nodes */
+.react-flow__handle {
+  z-index: 1001 !important;
+}
+
+/* Make handles more visible and improve positioning */
+.react-flow__handle {
+  width: 8px;
+  height: 8px;
+  background-color: #1a73e8;
+  border: 2px solid white;
+  opacity: 0.75;
+}
+
+.react-flow__handle:hover {
+  opacity: 1;
+  background-color: #0d47a1;
+  transform: scale(1.2);
+  transition: all 0.2s ease;
+}
+
+/* Hide handles when not needed */
+.react-flow__node:not(:hover):not(.selected) .react-flow__handle {
+  opacity: 0;
+}
+
+/* Ensure straight edges render properly */
+.react-flow__edge-path {
+  stroke-width: 2;
+}
+
+.react-flow__edge.straight .react-flow__edge-path {
+  stroke-dasharray: none;
+}

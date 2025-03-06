@@ -9,9 +9,24 @@ const api = axios.create({
   },
 });
 
+// Add request interceptor for authentication if needed
+// api.interceptors.request.use(...)
+
+// Add response interceptor for error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('API Error:', error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
+
+export default api;
+
+// Cost-related API calls
 export const getCostSummary = async (startDate: string, endDate: string) => {
   const response = await api.get('/costs/summary', {
-    params: { start_date: startDate, end_date: endDate },
+    params: { start_date: startDate, end_date: endDate }
   });
   return response.data;
 };

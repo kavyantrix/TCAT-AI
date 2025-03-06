@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, JSON, DateTime
+from sqlalchemy import create_engine, Column, String, JSON, DateTime, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
@@ -32,6 +32,17 @@ class AWSAdvisor(Base):
     check_type = Column(String, index=True)
     data = Column(JSON)
     last_updated = Column(DateTime, default=datetime.utcnow)
+
+# Add Architecture Diagram model (moved from diagram_model.py)
+class ArchitectureDiagram(Base):
+    __tablename__ = "architecture_diagrams"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    user_id = Column(String, index=True)  # For future user authentication
+    diagram_data = Column(JSON)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 def get_db():
     db = SessionLocal()
