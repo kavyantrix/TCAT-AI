@@ -29,7 +29,18 @@ async def get_advisor_details(db: Session = Depends(get_db)):
         # Otherwise, fetch fresh data from AWS
         advisor_data = aws_service.get_trusted_advisor_details()
         
-        # Store the data in the database
+        # Filter to keep only resources with warning or error status
+        if isinstance(advisor_data, dict):
+            for category, checks in advisor_data.items():
+                if isinstance(checks, list):
+                    filtered_checks = []
+                    for check in checks:
+                        # Keep checks that have warning or error status
+                        if isinstance(check, dict) and check.get('status') in ['warning', 'error']:
+                            filtered_checks.append(check)
+                    advisor_data[category] = filtered_checks
+        
+        # Store the filtered data in the database
         if db_advisor:
             # Update existing record
             db_advisor.data = advisor_data
@@ -74,7 +85,18 @@ async def get_recommendations(db: Session = Depends(get_db)):
         # Otherwise, fetch fresh data from AWS
         recommendations = aws_service.get_trusted_advisor_details()
         
-        # Store the data in the database
+        # Filter to keep only resources with warning or error status
+        if isinstance(recommendations, dict):
+            for category, checks in recommendations.items():
+                if isinstance(checks, list):
+                    filtered_checks = []
+                    for check in checks:
+                        # Keep checks that have warning or error status
+                        if isinstance(check, dict) and check.get('status') in ['warning', 'error']:
+                            filtered_checks.append(check)
+                    recommendations[category] = filtered_checks
+        
+        # Store the filtered data in the database
         if db_advisor:
             # Update existing record
             db_advisor.data = recommendations
