@@ -10,13 +10,17 @@ import {
   Avatar,
   InputAdornment,
   CircularProgress,
-  Paper
+  Paper,
+  Tooltip
 } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
+import { analyzeImage } from '../services/image-service';
+import html2canvas from 'html2canvas';
 
 interface Message {
   type: 'user' | 'bot';
@@ -25,12 +29,16 @@ interface Message {
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
-const AgentChatWidget = () => {
+interface AgentChatWidgetProps {
+  diagramRef?: React.RefObject<HTMLDivElement>;
+}
+
+const AgentChatWidget: React.FC<AgentChatWidgetProps> = ({ diagramRef }) => {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState<Message[]>([{
     type: 'bot',
-    text: 'Hi there! I\'m your TCAT Cost Optimization Assistant. Ask me anything about your AWS resources and costs!'
+    text: 'Hi there! I\'m your TCAT Assistant. Ask me anything about your AWS resources, costs, infrastructure'
   }]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -52,10 +60,23 @@ const AgentChatWidget = () => {
     setLoading(true);
 
     try {
+        let response = {}
+if(window.location.pathname.includes("architecture")){
+    const element = document.getElementById("DiagramFlow");
+    const canvas = await html2canvas(element);
+    const imageData = canvas.toDataURL('image/png');
+     response = await analyzeImage(imageData);
+
+}
+  else {
+         response = await axios.post(`${API_BASE_URL}/agent/chat`, {
+            query: userQuestion
+          });
+  }
+        // Send the image for analysis
+        
       // Using POST request instead of GET
-      const response = await axios.post(`${API_BASE_URL}/agent/chat`, {
-        query: userQuestion
-      });
+     
       
       setMessages(prev => [...prev, { 
         type: 'bot', 
@@ -66,6 +87,50 @@ const AgentChatWidget = () => {
       setMessages(prev => [...prev, { 
         type: 'bot', 
         text: 'Sorry, I encountered an error. Please try again.' 
+      }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAnalyzeDiagram = async () => {
+    if (!diagramRef?.current) {
+      setMessages(prev => [...prev, { 
+        type: 'bot', 
+        text: 'Sorry, I couldn\'t find a diagram to analyze.' 
+      }]);
+      return;
+    }
+
+    setMessages(prev => [...prev, { 
+      type: 'user', 
+      text: 'Analyze this diagram for me, please.' 
+    }]);
+    setLoading(true);
+
+    try {
+      // Capture the diagram as an image
+      const canvas = await html2canvas(diagramRef.current);
+      const imageData = canvas.toDataURL('image/png');
+      
+      // Add a loading message
+      setMessages(prev => [...prev, { 
+        type: 'bot', 
+        text: 'Analyzing your diagram with Gemini Flash...' 
+      }]);
+      
+      // Send the image for analysis
+      const analysis = await analyzeImage(imageData);
+      
+      setMessages(prev => [...prev, { 
+        type: 'bot', 
+        text: analysis
+      }]);
+    } catch (error) {
+      console.error('Error analyzing diagram:', error);
+      setMessages(prev => [...prev, { 
+        type: 'bot', 
+        text: 'Sorry, I encountered an error analyzing the diagram. Please try again.' 
       }]);
     } finally {
       setLoading(false);
@@ -98,7 +163,7 @@ const AgentChatWidget = () => {
             bottom: 32, 
             m: 0, 
             height: 600,
-            width: 600,  // Changed from 400 to 500
+            width: 400,
             borderRadius: 3,
             overflow: 'hidden'
           }
@@ -115,7 +180,7 @@ const AgentChatWidget = () => {
             <AutoAwesomeIcon />
           </Avatar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            TCAT Cost Assistant
+            TCAT Assistant
           </Typography>
           <IconButton onClick={() => setOpen(false)} size="small">
             <CloseIcon />
@@ -141,14 +206,14 @@ const AgentChatWidget = () => {
                 key={index} 
                 sx={{ 
                   alignSelf: message.type === 'user' ? 'flex-end' : 'flex-start',
-                  maxWidth: '90%'  // Changed from 80% to 90%
+                  maxWidth: '80%'
                 }}
               >
                 <Paper 
                   elevation={1}
                   sx={{ 
                     p: 2, 
-                    bgcolor: message.type === 'user' ? 'primary.main' : '#f1f3f4',
+                    bgcolor: message.type === 'user' ? 'primary.main' : 'background.paper',
                     color: message.type === 'user' ? 'white' : 'text.primary',
                     borderRadius: 2
                   }}
@@ -161,26 +226,32 @@ const AgentChatWidget = () => {
                 </Paper>
               </Box>
             ))}
+            <div ref={messagesEndRef} />
+            
             {loading && (
               <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
                 <CircularProgress size={24} />
               </Box>
             )}
-            <div ref={messagesEndRef} />
           </Box>
-
+          
           <Box 
             component="form" 
             onSubmit={handleSubmit}
             sx={{ 
               p: 2, 
               borderTop: '1px solid rgba(0,0,0,0.1)',
-              bgcolor: '#f8f9fa'
+              bgcolor: 'background.paper',
+              display: 'flex',
+              gap: 1
             }}
           >
+            
             <TextField
               fullWidth
-              placeholder="Ask about your AWS costs..."
+              placeholder="Ask a question..."
+              variant="outlined"
+              size="small"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               disabled={loading}
@@ -188,17 +259,15 @@ const AgentChatWidget = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton 
-                      type="submit" 
+                      edge="end" 
+                      type="submit"
                       disabled={!question.trim() || loading}
-                      color="primary"
                     >
                       <SendIcon />
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              variant="outlined"
-              size="small"
             />
           </Box>
         </DialogContent>

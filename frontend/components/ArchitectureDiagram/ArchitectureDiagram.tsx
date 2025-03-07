@@ -338,7 +338,7 @@ const ArchitectureDiagram: React.FC = () => {
       <Box sx={{ display: 'flex', flexGrow: 1 }}>
         <ServicePalette onDragStart={onDragStart} />
         
-        <Box sx={{ flexGrow: 1, border: '1px solid #ddd', borderRadius: 1 }} ref={reactFlowWrapper}>
+        <Box sx={{ flexGrow: 1, border: '1px solid #ddd', borderRadius: 1 }} ref={reactFlowWrapper} id="DiagramFlow">
           <ReactFlowProvider>
             <ReactFlow
               nodes={nodes}
