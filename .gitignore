@@ -1,19 +1,28 @@
+# Environment variables
+.env
+
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
 venv/
-.env
+*.so
 
 # Node
 node_modules/
 .next/
-.env.local
-.env*.local
+.cache/
+dist/
 
-# IDE
-.vscode/
-.idea/
+# Database
+*.sqlite3
+*.db
 
 # OS
 .DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+*.log

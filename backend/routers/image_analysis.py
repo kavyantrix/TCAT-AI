@@ -9,8 +9,8 @@ from pydantic import BaseModel
 import base64
 from dotenv import load_dotenv
 import PIL.Image
-from google import genai
-from google.genai import types
+# from google import genai
+# from google.genai import types
 
 load_dotenv()
 router = APIRouter()
@@ -53,7 +53,7 @@ async def analyze_image(request: ImageAnalysisRequest, db: Session = Depends(get
 
 
         final_prompt = f"{SYSTEM_PROMPT} User Request: {request.prompt}"
-        client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+        # client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=[types.Content(role="user", parts=[types.Part(text=final_prompt)]), image])

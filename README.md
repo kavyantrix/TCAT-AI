@@ -1,6 +1,38 @@
-# AI-Powered AWS Cost Optimizer
+# TCAT-AI
 
-A full-stack application to analyze and optimize AWS costs using FastAPI, Next.js, and OpenAI.
+An intelligent cloud cost management tool that leverages AI to analyze AWS infrastructure, optimize costs, and provide actionable recommendations.
+
+## Features
+
+- 📊 Real-time AWS cost analysis and visualization
+- 🤖 AI-powered architecture analysis using Gemini and OpenAI
+- 📋 Automated Trusted Advisor checks and recommendations
+- 📑 Automated report generation (PDF/DOCX)
+- 🔍 Image-based architecture analysis
+- 💰 Cost optimization suggestions
+- 📈 Resource utilization tracking
+
+## Tech Stack
+
+- Backend: FastAPI, PostgreSQL
+- Frontend: React, Material-UI
+- AI/ML: OpenAI GPT-4, Google Gemini
+- AWS SDK: Boto3
+
+## Getting Started
+
+1. Clone the repository
+2. Configure environment variables
+3. Install dependencies
+4. Run the application
+
+## Note
+
+Remember to secure your AWS credentials and API keys before deploying.
+
+## License
+
+MIT License
 
 ## Prerequisites
 

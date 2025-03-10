@@ -44,6 +44,15 @@ class ArchitectureDiagram(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+class TrustedAdvisorCheck(Base):
+    __tablename__ = "trusted_advisor_checks"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, index=True)
+    category = Column(String, index=True)
+    result = Column(JSON)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
 def get_db():
     db = SessionLocal()
     try:
